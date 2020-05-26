@@ -1,0 +1,25 @@
+{
+    "name": "ller/chat",
+    "description": "A simple private chat package",
+    "keywords": ["websocket", "chat"],
+    "authors": [
+        {
+          "name": "Ller",
+          "email": "1846290637@qq.com"
+        }
+    ],
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ller\\Chat\\" : "src/"
+        },
+        "files": ["./src/Common/functions.php"]
+    },
+    "scripts": {
+        "chat": "@php demo.php"
+    },
+    "config": {
+        "process-timeout": 0
+    }
+}
