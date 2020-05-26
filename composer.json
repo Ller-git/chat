@@ -1,7 +1,7 @@
 {
     "name": "ller/chat",
     "description": "A simple private chat package",
-    "keywords": ["websocket", "chat"],
+    "keywords": ["websocket", "chat", "socket"],
     "authors": [
         {
           "name": "Ller",
@@ -13,13 +13,6 @@
     "autoload": {
         "psr-4": {
             "Ller\\Chat\\" : "src/"
-        },
-        "files": ["./src/Common/functions.php"]
-    },
-    "scripts": {
-        "chat": "@php demo.php"
-    },
-    "config": {
-        "process-timeout": 0
+        }
     }
 }

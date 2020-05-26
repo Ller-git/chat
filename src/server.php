@@ -1,11 +1,7 @@
 <?php
 namespace Ller\Chat;
 
-error_reporting(E_ALL);
-set_time_limit(0);  // 设置超时时间为无限,防止超时
-date_default_timezone_set('Asia/shanghai');
-
-class WebSocket {
+class Server {
     const LOG_PATH = "./";
     const LISTEN_SOCKET_NUM = 9;
 
@@ -16,11 +12,19 @@ class WebSocket {
     public $success;   // 发送成功
     public $wait;  // 待发送   
 
+    public function __construct()
+    {
+        $this->fail = function(){};
+        $this->success = function(){};
+        $this->wait = function(){ return '0'; };
+    }
+
     /**
      * 定义发送成功方法
      * @return [type] [description]
      */
-    public function sent_success($fun) {
+    public function sent_success($fun) 
+    {
         $this->success = $fun;
     }
 
@@ -29,7 +33,8 @@ class WebSocket {
      * 定义发送失败方法
      * @return [type] [description]
      */
-    public function sent_fail($fun) {
+    public function sent_fail($fun) 
+    {
         $this->fail = $fun;
     }
 
@@ -38,7 +43,8 @@ class WebSocket {
      * 定义待发送方法
      * @return [type] [description]
      */
-    public function wait_send($fun) {
+    public function wait_send($fun) 
+    {
         $this->wait = $fun;
     }
 
@@ -319,14 +325,15 @@ class WebSocket {
                 // 查询未读信息
                 $wait = $this->wait;
                 $merge = $wait($response);
-
-                // 发送未读信息
-                foreach ($merge as $value) {
-                    $value['room'] = $msg_room;
-                    $value['type'] = 'user';
-                    $create_date = $value['create_date'] ?? time();
-                    $value['create_date'] = date("m-d H:i:s", $create_date);
-                    $this->broadcast($value);
+                if ($merge) {
+                    // 发送未读信息
+                    foreach ($merge as $value) {
+                        $value['room'] = $msg_room;
+                        $value['type'] = 'user';
+                        $create_date = $value['create_date'] ?? time();
+                        $value['create_date'] = date("m-d H:i:s", $create_date);
+                        $this->broadcast($value);
+                    }
                 }
 
                 break;
