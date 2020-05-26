@@ -9,17 +9,19 @@ $ws = $ws->run("0.0.0.0", "8080");
 ```
 命令行执行 `php simple_demo.php`
 
-### Client.html
+### Client1.html
 ``` 
     var uname = 1;  // 自己的唯一标识
     var to = 2;     // 好友的唯一标识
     var ws = new WebSocket("ws://127.0.0.1:8080");
 
+    // 发送信息
     function send(msg) {
         var data = JSON.stringify({'from': uname, 'to': to, 'content': msg, 'type': 'user'});
         ws.send(data);
     }
-
+    
+    // 获取服务器响应信息
     ws.onmessage = function (e) {
         var msg = JSON.parse(e.data);
 
@@ -37,6 +39,38 @@ $ws = $ws->run("0.0.0.0", "8080");
         }
     };
 ```
+### Client2.html
+``` 
+    var uname = 2;  // 自己的唯一标识
+    var to = 1;     // 好友的唯一标识
+    var ws = new WebSocket("ws://127.0.0.1:8080");
+
+    // 发送信息
+    function send(msg) {
+        var data = JSON.stringify({'from': uname, 'to': to, 'content': msg, 'type': 'user'});
+        ws.send(data);
+    }
+    
+    // 获取服务器响应信息
+    ws.onmessage = function (e) {
+        var msg = JSON.parse(e.data);
+
+        switch (msg.type) {
+            case 'user':
+                console.log(msg.content);
+                break;
+            case 'handshake':
+                // 注意：连接成功之后立即发送登录信息
+                var user_info = {'type': 'login', 'content': uname, 'to': to, 'from': uname};
+                ws.send(JSON.stringify(user_info));
+                break;
+            default:
+                return;
+        }
+    };
+```
+client1和client2是一个简单的私聊，可以用已经封装的send()发送消息，比如`send('你好，世界');`
+
 
 ### detailed.php
 ```
