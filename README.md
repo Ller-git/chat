@@ -1,5 +1,5 @@
 #chat
-A simple private chat package
+composer require ller/chat v1.0
 
 ### simple_demo.php
 ```
